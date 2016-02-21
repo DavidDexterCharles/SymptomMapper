@@ -87,6 +87,37 @@ Route::get('facts/{id}',function($id){
     return $fact;
 });
 
+///quizzes/filter/:type/:level/:difficulty
+
+Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',function($begin_time,$end_time,$longi,$lati,$symptom){
+    //time timestamps
+    //location lat,long
+    //symptom name pain
+    
+    
+    
+    
+    
+    $facts = App\Fact::all();
+    
+    foreach ($facts as $fact) {
+        foreach($fact->persons as $person){
+            
+        }
+        foreach($fact->locations as $location){
+            
+        }
+        foreach($fact->times as $time){
+            
+        }
+        
+        foreach($fact->symptoms as $symptom){
+            
+        }
+        
+    }
+    return $facts;
+});
 
 
 

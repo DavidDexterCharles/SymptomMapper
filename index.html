@@ -3,20 +3,22 @@
 <head>
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
-    <link rel="stylesheet" href="css/main.css">
+    <link rel="apple-touch-icon" href="css/main.css" />
+    <link rel="apple-touch-icon" href="css/acute.select.css" />
 </head>
     <body ng-app="Mapper">
 
-       <div ng-cloak>
+    <div ng-controller="DiagCtrl">
+        <div ng-cloak>
           <md-content>
             <md-tabs md-dynamic-height md-border-bottom>
-              <md-tab label="Diagnose">
+              <md-tab label="one">
                 <md-content class="md-padding">
                   <h1 class="md-display-2">Tab One</h1>
-                  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
+                  <select class="ac-select stateList" ac-model="selectedState" ac-options="s.name for s in getAllStates()" ac-settings="{ loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>
                 </md-content>
               </md-tab>
-              <md-tab label="Symptom Map">
+              <md-tab label="two">
                 <md-content class="md-padding">
                   <h1 class="md-display-2">Tab Two</h1>
                   <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi. Aliquam erat volutpat. Nam placerat, tortor in ultrices porttitor, orci enim rutrum enim, vel tempor sapien arcu a tellus. Vivamus convallis sodales ante varius gravida. Curabitur a purus vel augue ultrices ultricies id a nisl. Nullam malesuada consequat diam, a facilisis tortor volutpat et. Sed urna dolor, aliquet vitae posuere vulputate, euismod ac lorem. Sed felis risus, pulvinar at interdum quis, vehicula sed odio. Phasellus in enim venenatis, iaculis tortor eu, bibendum ante. Donec ac tellus dictum neque volutpat blandit. Praesent efficitur faucibus risus, ac auctor purus porttitor vitae. Phasellus ornare dui nec orci posuere, nec luctus mauris semper.</p>
@@ -24,7 +26,7 @@
                   <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
                 </md-content>
               </md-tab>
-              <md-tab label="API">
+              <md-tab label="three">
                 <md-content class="md-padding">
                   <h1 class="md-display-2">Tab Three</h1>
                   <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus. Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula diam, congue eu enim scelerisque, finibus commodo lectus.</p>
@@ -32,13 +34,16 @@
               </md-tab>
             </md-tabs>
           </md-content>
-      </div>
-    
-        <script src="node_modules/angular/angular.js"></script>
-        <script src="node_modules/angular-aria/angular-aria.js"></script>
-        <script src="node_modules/angular-animate/angular-animate.js"></script>
-        <script src="node_modules/angular-material/angular-material.js"></script>
-        <script src="js/app.js"></script>
+        </div>
+    </div>
 
-    </body>
+    <script src="node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-aria/angular-aria.js"></script>
+    <script src="node_modules/angular-animate/angular-animate.js"></script>
+    <script src="node_modules/angular-material/angular-material.js"></script>
+    <script src="js/acute.select.js" type="text/javascript" charset="utf-8"></script>
+    <script src="js/app.js"></script>
+  
+
+</body>
 </html>

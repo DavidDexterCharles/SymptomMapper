@@ -30,4 +30,5 @@ class Fact extends Model
         return $this->hasMany('App\Person','personid','personid');
     }
     
+    
 }
