@@ -4,8 +4,6 @@ function getData()
                 var northEast = new google.maps.LatLng(34.052234, -118.243685);
                 var lngSpan = northEast.lng() - southWest.lng();
                 var latSpan = northEast.lat() - southWest.lat();
-              
-                
 
                  // set multiple marker
                 var data = {
@@ -13,34 +11,22 @@ function getData()
                     marker:[]
                 };
                 for (var i = 0; i <50; i++) {
-
-                    
-
-                    // init markers
+        
                     var obj = {
                         position: new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()),
                         map:{},
                         title: 'Click Me ' + i
                     };
 
-                    
                     data.position.push(obj.position);
                     data.marker.push(obj);
-                    
-                   
-                    
-                    
-
-                    // process multiple info windows
-                    
                 }
 
-                return data;
-        
+                return data;       
     }
     
     function initMap(list){
-         var options = {
+            var options = {
                     zoom: 5,
                     center: new google.maps.LatLng(39.909736, -98.522109), // centered US
                     mapTypeId: google.maps.MapTypeId.TERRAIN,
@@ -55,6 +41,7 @@ function getData()
 
                 list.marker.forEach(function(ele,i){
                     ele.map=map;
+
                     //console.log(ele);
                      var marker = new google.maps.Marker(ele);
                     (function(marker, i) {
@@ -72,6 +59,15 @@ function getData()
                             data:list.position,
                             map:map    
                     });
+    }
+
+
+    function redo(){
+        var list=getData();
+
+        initMap(getData());
+
+        return list;
     }
 
        /* // check DOM Ready
