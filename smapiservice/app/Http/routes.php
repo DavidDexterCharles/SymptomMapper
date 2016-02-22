@@ -1,5 +1,4 @@
 <?php
-
 header('Access-Control-Allow-Origin: *');//http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
 header('Access-Control-Allow-Methods: GET, POST, OPTIONS');//http://stackoverflow.com/questions/13400594/understanding-xmlhttprequest-over-cors-responsetext?lq=1
 
@@ -48,6 +47,10 @@ Route::get('symptoms/{id}', function ($id) {
     return App\Location::find($id);
 });
 
+Route::get('symptoms/by_name/{name}', function ($name) {
+    return App\Location::all()->where('symptom','like','%'.$symptom.'%');
+});
+
 Route::get('facts',function(){
     $facts = App\Fact::all();
     
@@ -92,35 +95,9 @@ Route::get('facts/{id}',function($id){
 
 ///quizzes/filter/:type/:level/:difficulty
 
-Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',function($begin_time,$end_time,$longi,$lati,$symptom){
-    //time timestamps
-    //location lat,long
-    //symptom name pain
     
     
-    
-    
-    
-    $facts = App\Fact::all();
-    
-    foreach ($facts as $fact) {
-        foreach($fact->persons as $person){
-            
-        }
-        foreach($fact->locations as $location){
-            
-        }
-        foreach($fact->times as $time){
-            
-        }
-        
-        foreach($fact->symptoms as $symptom){
-            
-        }
-        
-    }
-    return $facts;
-});
+   
 
 Route::get('/', function () {
     // return view('welcome');
@@ -128,6 +105,7 @@ Route::get('/', function () {
     // echo $version = $laravel::VERSION;
     echo 'Welcome to my site';
 });
+
 
 
 Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',function($begin_time,$end_time,$longi,$lati,$symptom){
@@ -172,9 +150,16 @@ Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',funct
     
     if($longi=='*' || $lati=='*'){
         $geo_query = App\Location::all();
-    }else
-    
-    //return $time_ids;
+    }else if($longi != '*' && $lati != '*'){
+        foreach ($geo_query as $geo){
+            $lonb = $geo->longitude;
+            $latb = $geo->latitude;
+            
+            if(getDistanceFromCoords($longi,$lati,$lonb,$latb) <= 5){
+                array_push($geo_ids,$geo->geoid);
+            }      
+        }
+    }
     
     $facts = App\Fact::all()->whereIn('symptomid', $symptom_ids)->whereIn('time_id',$time_ids)->whereIn('geoid',$geo_ids);
     
@@ -217,9 +202,10 @@ function getDistanceFromCoords($lona,$lata,$lonb,$latb){
 
 }
 
-Route::get('test',function(){
+// Route::get('test',function(){
     
-    return getDistanceFromCoords(0,0,0,0);
-});
+//     return getDistanceFromCoords(10.596829, -61.135275,10.596909, -61.134170);
+// });
+
 
 
