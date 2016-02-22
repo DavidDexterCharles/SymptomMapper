@@ -4,43 +4,82 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="node_modules/angular-material/angular-material.css">
     <link href="acute.select/acute.select.css" rel="stylesheet" />
-    
-    
-    
     <style>
         .tabsdemoDynamicHeight md-content {
             background-color: transparent !important; }
         .tabsdemoDynamicHeight md-content md-tabs {
-            background: #f6f6f6;
             border: 1px solid #e1e1e1; }
-        .tabsdemoDynamicHeight md-content md-tabs md-tabs-wrapper {
-            background: white; }
         .tabsdemoDynamicHeight md-content h1:first-child {
             margin-top: 0; }
     </style>
 </head>
-   
+    <body ng-app="Mapper" style="background-color: #FAFAfa">
 
-    <body ng-app="Mapper">
-     
         <div ng-cloak ng-controller="DiagCtrl">
-            <md-content style="height: 100%">
+            <md-content>
                 <md-tabs md-dynamic-height md-border-bottom>
-                    <md-tab label="Diagnosis">
-                        <md-content>
-                            <div layout="row">
-                                <div flex="33" >
-                                    <div style="height: 400px; background-color: #F" layout-padding>
+                    <md-tab label="Diagnosis" ng-init="pull()">
+                        <div layout="column" ng-cloak>
+                            <section layout="row" flex>
+                                <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')" style="overflow-y: hidden">
+                                    <md-content layout-padding style="overflow-x: hidden; height: 800px; overflow-y: hidden;}">
+                                        <md-button ng-click="close()" class="md-primary" hide-gt-md>
+                                            Close Sidenav Left
+                                        </md-button>
+                                        <h1>Select Symptoms</h1>
                                         <select class="ac-select stateList" ac-model="selectedState" ac-options="s.name for s in getAllStates()" ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>
-                                    </div>
-                                </div>
-                                <div flex>
-                                    <h1 class="md-display-2">Tab One</h1>
+                                        <md-list>
+                                            <md-divider></md-divider>
+                                            <md-list-item ng-repeat="item in symptoms">
+                                                <p>{{ item.name }}</p>
+                                                <p>{{item.id}}</p>
+                                           </md-list-item>
+                                        </md-list>
+                                    </md-content>
+                                </md-sidenav>
+                                <md-content flex layout-padding>
+                                    <div layout="column" layout-fill layout-align="center" style="height: 800px;"  flex="60">
 
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>
-                                </div>
-                            </div>
-                        </md-content>
+                                        <div>
+                                            <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md>
+                                                Enter Symptoms
+                                            </md-button>
+                                        </div>
+
+                                        <md-card ng-repeat="item in diagnosis">
+                                            <md-card-title>
+                                                <md-card-title-text>
+                                                    <span class="md-headline">{{item.question.type}}</span>
+                                                    <span class="md-subhead">{{item.question.text}}</span>
+                                                </md-card-title-text>
+                                                <md-card-title-media>
+                                                    <div class="md-media-lg card-media"></div>
+                                                </md-card-title-media>
+                                            </md-card-title>
+                                            <md-card-actions layout="row" layout-align="end center">
+                                                <md-button>View Details</md-button>
+                                            </md-card-actions>
+                                        </md-card>
+                                    </div>
+                                    <div flex></div>
+                                </md-content>
+                            </section>
+                        </div>
+                        <!--<md-content>-->
+                            <!--<div layout="row">-->
+                                <!--<div flex="33" >-->
+                                    <!--<div style="height: 400px;"  layout-padding>-->
+                                        <!--<select class="ac-select stateList" ac-model="selectedState" ac-options="s.name for s in getAllStates()" ac-settings="{ comboMode: true, loadOnOpen: true, minWidth: '300px' }" ac-change="stateSelected(value)"></select>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+                                <!--<div flex>-->
+                                    <!--<h1 class="md-display-2">Tab One</h1>-->
+
+                                    <!--<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla venenatis ante augue. Phasellus volutpat neque ac dui mattis vulputate. Etiam consequat aliquam cursus. In sodales pretium ultrices. Maecenas lectus est, sollicitudin consectetur felis nec, feugiat ultricies mi.</p>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</md-content>-->
                     </md-tab>
                     <md-tab label="Map">
                         <md-content class="md-padding">
@@ -78,7 +117,7 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
-    
+
     <script src="/bower_components/ngmap/build/scripts/ng-map.min.js"></script>
     <script src="http://ngmaterial.assets.s3.amazonaws.com/svg-assets-cache.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
@@ -89,7 +128,7 @@
     <script src="node_modules/angular-material/angular-material.js"></script>
 
 
-  
+
 
 </body>
 </html>
