@@ -1,5 +1,8 @@
 <?php
 
+header('Access-Control-Allow-Origin: *');//http://stackoverflow.com/questions/20035101/no-access-control-allow-origin-header-is-present-on-the-requested-resource
+header('Access-Control-Allow-Methods: GET, POST, OPTIONS');//http://stackoverflow.com/questions/13400594/understanding-xmlhttprequest-over-cors-responsetext?lq=1
+
 /*
 |--------------------------------------------------------------------------
 | Routes File
@@ -119,17 +122,6 @@ Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',funct
     return $facts;
 });
 
-
-
-
-
-
-
-
-
-
-
-
 Route::get('/', function () {
     // return view('welcome');
     // $laravel = app();
@@ -137,47 +129,97 @@ Route::get('/', function () {
     echo 'Welcome to my site';
 });
 
-// Route::get('hello/{name}', function ($name) {
+
+Route::get('facts/filter/{begin_time}/{end_time}/{longi}/{lati}/{symptom}',function($begin_time,$end_time,$longi,$lati,$symptom){
+    //time timestamps
+    //location lat,long
+    //symptom name pain
+    //AIzaSyBGZR6aqWdZt5MW_F9K4FrK-pz-bmGmzq4
+
+    $result = array();
+    $symptom_query = null; 
+    if($symptom == '*'){
+    	$symptom_query = DB::Table('symptoms_dimension')->get();  
+    }else{
+    	$symptom_query = DB::Table('symptoms_dimension')->where('symptom','like','%'.$symptom.'%')->get();
+    }
+
+    $symptom_ids = array();
+
+    foreach($symptom_query as $symptom){
+    	array_push($symptom_ids,$symptom->symptom_id);
+    }
+    //return $symptom_ids;
+
+    if($begin_time == '*' && $end_time == '*'){
+    	$time_query = DB::Table('time_dimension')->get();
+    }else if($begin_time == '*' && $end_time != '*'){
+    	$time_query = DB::Table('time_dimension')->where('time_stamp','<=',$end_time)->get();
+    }else if($begin_time != '*' && $end_time == '*'){
+    	$time_query = DB::Table('time_dimension')->where('time_stamp','>=',$begin_time)->get();
+    }else if($begin_time != '*' && $end_time != '*'){
+    	$time_query = DB::Table('time_dimension')->whereBetween('time_stamp',[$begin_time,$end_time])->get();
+    }
+     
+    $time_ids = array();
+
+    foreach($time_query as $time){
+    	array_push($time_ids,$time->time_id);
+    }
     
-//     echo 'Hello there '.$name;
-// });
+    $geo_ids = array();
+    $geo_query = null;
+    
+    if($longi=='*' || $lati=='*'){
+        $geo_query = App\Location::all();
+    }else
+    
+    //return $time_ids;
+    
+    $facts = App\Fact::all()->whereIn('symptomid', $symptom_ids)->whereIn('time_id',$time_ids)->whereIn('geoid',$geo_ids);
+    
+    foreach ($facts as $fact) {
+        foreach($fact->persons as $person){
+            
+        }
+        foreach($fact->locations as $location){
+            
+        }
+        foreach($fact->times as $time){
+            
+        }
+        
+        foreach($fact->symptoms as $symptom){
+            
+        }
+        
+    }
+    return $facts;
+});
 
-//  Route::post('/test',function(){
-//      echo 'POST';
-//  });// create an item
- 
-// Route::get('/test',function(){
-//      echo 'GET';
-//      echo '<form method="POST" action"test">';
-//      echo '<input type="submit">';
-//      echo '<input type="hidden" value="PUT" name="_method">';
-//      echo '</form>';
-//  });//read an item
-//  Route::get('/test2',function(){
-//      echo '<form method="POST" action"test">';
-//      echo '<input type="submit">';
-//      echo '<input type="hidden" value="DELETE" name="_method">';
-//      echo '</form>';
-//  });//read an item
- 
-// Route::put('/test',function(){
-//      echo 'UPDATE';
-//  });//update an item
-// Route::delete('/test2',function(){
-//      echo 'delete';
-//  });//delete an item
+function toRad($num){
+    return $num * pi() / 180;
+}
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| This route group applies the "web" middleware group to every route
-| it contains. The "web" middleware group is defined in your HTTP
-| kernel and includes session state, CSRF protection, and more.
-|
-*/
+function getDistanceFromCoords($lona,$lata,$lonb,$latb){
+    //$radians = 
+    
+    $R = 6371; // km
+    $dLat = toRad($latb-$lata);
+    $dLon = toRad($lonb-$lona);
+    $lata =toRad($lata);
+    $latb = toRad($latb);
+    
+    $a = sin($dLat/2) * sin($dLat/2) +
+            sin($dLon/2) * sin($dLon/2) * cos($lata) * cos($latb); 
+    $c = 2 * atan2(sqrt($a),sqrt(1-$a)); 
+    return $R * $c;
 
-// Route::group(['middleware' => ['web']], function () {
-//     //
-// });
+}
+
+Route::get('test',function(){
+    
+    return getDistanceFromCoords(0,0,0,0);
+});
+
+
