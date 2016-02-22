@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+    <script type="text/javascript" charset="utf-8">
+       function CallURL(){
+           var link=document.getElementById('search').value;
+          /* $.getJSON(link,(function (data) 
+               { 
+                  $('#result').text(JSON.stringify(data));
+                  //document.getElementById('result').innerHtml=data.result;
+               }
+           ));*/
+           
+          $.ajax({
+            url: link,
+            dataType: 'JSONP',
+            jsonpCallback: 'callback',
+            type: 'GET',
+            success: function (data) {
+                  $('#result').text(JSON.stringify(data));
+            }
+        });
+           
+        };
+
+
+        
+    </script>
+</head>
+<body>
+    <input type="text" id="search">
+    <button onclick="CallURL()"> BUTTON</button> 
+    
+    
+    <div id="result"></div>  
+</body>
