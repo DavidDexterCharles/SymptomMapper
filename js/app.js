@@ -138,50 +138,61 @@
 				});
 		};
 	})
-	.controller('MapCtrl', function($scope) {
-		$scope.positions =[
-			{pos:[40.71, -74.21]},
-			{pos:[40.72, -74.20]},
-			{pos:[40.73, -74.19]},
-			{pos:[40.74, -74.18]},
-			{pos:[40.75, -74.17]},
-			{pos:[40.76, -74.16]},
-			{pos:[40.77, -74.15]}
-		];
+	.controller('MapCtrl', function($scope,NgMap) {
 
-		$scope.data={
-			posArr : []
-		};
+		var heatmap, vm = this;
+	    NgMap.getMap().then(function(map) {
+	      vm.map = map;
+	      heatmap = vm.map.heatmapLayers.foo;
+	    	
+	    })
 
-		$scope.getData=function(){
-			var southWest = new google.maps.LatLng(40.744656, -74.005966);
-			var northEast = new google.maps.LatLng(34.052234, -118.243685);
-			var lngSpan = northEast.lng() - southWest.lng();
-			var latSpan = northEast.lat() - southWest.lat();
+		  $scope.positions =[
+		      {pos:[40.71, -74.21]},
+		      {pos:[40.72, -74.20]},
+		      {pos:[40.73, -74.19]},
+		      {pos:[40.74, -74.18]},
+		      {pos:[40.75, -74.17]},
+		      {pos:[40.76, -74.16]},
+		      {pos:[40.77, -74.15]}
+		    ];
+		   
+		   	$scope.data={
+		   		posArr : []
+		   	};
+		   	$scope.heatData=[];
 
-			// set multiple marker
+		    $scope.getData=function(){
+		    	var southWest = new google.maps.LatLng(40.744656, -74.005966);
+                var northEast = new google.maps.LatLng(34.052234, -118.243685);
+                var lngSpan = northEast.lng() - southWest.lng();
+                var latSpan = northEast.lat() - southWest.lat();
 
-			for (var i = 0; i <50; i++) {
+                 // set multiple marker
+                
+                for (var i = 0; i <50; i++) {
+        
+                    var obj={
+                    	pos:[southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()],
+                    	heat:new google.maps.LatLng(southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random())
+                    }
 
-				var obj={
-					pos:[southWest.lat() + latSpan * Math.random(), southWest.lng() + lngSpan * Math.random()]
-				}
-				//console.log(JSON.stringify(obj.position));
-				$scope.data.posArr.push(obj);
+                    //console.log(JSON.stringify(obj.position));
+                    $scope.data.posArr.push(obj);
+                    $scope.heatData.push(obj.heat);
+                }
+               //for (var i = 0; i <50; i++) {
+               	//	console.log(JSON.stringify($scope.data.pos));	
+               //} 	
+                    
+		    };
 
-			}
-			//for (var i = 0; i <50; i++) {
-			//	console.log(JSON.stringify($scope.data.pos));
-			//}
+		    $scope.check=function(){
+		    	for (var i = 0; i <50; i++) {
+               		console.log(JSON.stringify($scope.data.posArr.heat));	
+               } 	
+		    }
 
-		};
-
-		$scope.check=function(){
-			for (var i = 0; i <50; i++) {
-				console.log(JSON.stringify($scope.data.posArr));
-			}
-		}
-
-	});
+		});
 
 })();

@@ -88,13 +88,14 @@
                                     <h1 class="md-display-2">Tab Two</h1>
                                     <button  onclick="list = redo()">Redo</button>
                                 </div>
-                                <div flex map-lazy-load="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdfvurICbwLbsc-jCweiBytVuZfaNv0Co">
+                                 <div flex map-lazy-load="https://maps.googleapis.com/maps/api/js?key=AIzaSyDdfvurICbwLbsc-jCweiBytVuZfaNv0Co&libraries=visualization">
                                     <div ng-init='getData()'></div>
                                     <div ng-init='check()'></div>
-                                    <ng-map center="[40.74, -74.18]">
+                                    <ng-map center="[40.74, -74.18]" zoom="5">
                                         <marker ng-repeat="d in data.posArr"
                                              position="{{d.pos}}" >
                                         </marker>
+                                         <heatmap-layer id="foo" data="heatData"></heatmap>
                                     </ng-map>
                                 </div>
                             </div>
